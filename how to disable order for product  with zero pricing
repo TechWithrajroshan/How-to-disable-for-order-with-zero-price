@@ -1,0 +1,15 @@
+/**
+ * Order disable for zero proce
+ */
+
+function disable_order_for_free_products($passed, $product_id) {
+    $product = wc_get_product($product_id);
+
+    if ($product && ($product->get_price() == 0 || $product->get_price() == '')) {
+        wc_add_notice(__('You cannot purchase a product with zero or empty price.'), 'error');
+        $passed = false;
+    }
+
+    return $passed;
+}
+add_filter('woocommerce_add_to_cart_validation', 'disable_order_for_free_products', 10, 2);
